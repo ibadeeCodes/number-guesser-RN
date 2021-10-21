@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "3.guess-number-app",
-    "slug": "3.guess-number-app",
+    "slug": "guess-number-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
