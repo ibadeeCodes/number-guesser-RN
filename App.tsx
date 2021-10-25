@@ -10,11 +10,18 @@ import StartGameScreen from './screens/StartGameScreen'
 import GameScreen from './screens/GameScreen'
 
 const App = () => {
-  const [number, setNumber] = useState<number>()
+  const [number, setNumber] = useState<number | null>()
 
-  const onSetNumberHandler = (number: number): void => {
-    setNumber(number!)
-    // console.log('hi')
+  const onSetNumberHandler = (value: number | null): void => {
+    setNumber(value)
+  }
+
+  let content = <StartGameScreen onSetNumberHandler={onSetNumberHandler} />
+
+  if (number) {
+    content = (
+      <GameScreen userNumber={number} onSetNumberHandler={onSetNumberHandler} />
+    )
   }
 
   return (
@@ -26,8 +33,7 @@ const App = () => {
         translucent={false}
       />
       <Header title='Number Guesser' />
-      <StartGameScreen onSetNumberHandler={onSetNumberHandler} />
-      {number && <GameScreen />}
+      {content}
     </View>
   )
 }

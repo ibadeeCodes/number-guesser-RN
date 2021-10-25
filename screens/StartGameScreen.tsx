@@ -35,8 +35,9 @@ const StartGameScreen: React.FC<PropTypes> = ({ onSetNumberHandler }) => {
 
   // Form Handling
   const resetForm = () => {
+    setIsConfirmed(false)
     setInputValue('')
-    onSetNumberHandler()
+    onSetNumberHandler(null)
   }
 
   const submitForm = () => {
