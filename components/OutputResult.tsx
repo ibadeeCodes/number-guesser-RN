@@ -8,16 +8,17 @@ import Card from './Card'
 // Interfaces
 interface PropTypes {
   number: SetStateAction<number>
+  onStartGameHandler: () => void
 }
 
-const OutputResult = ({ number }: PropTypes) => {
+const OutputResult = ({ number, onStartGameHandler }: PropTypes) => {
   return (
     <Card style={styles.resultContainer}>
       <Text>You've selected</Text>
       <View style={styles.numberContainer}>
         <Text style={styles.numberText}>{number}</Text>
       </View>
-      <Button title='Start Game' onPress={() => {}} />
+      <Button title='Start Game' onPress={onStartGameHandler} />
     </Card>
   )
 }

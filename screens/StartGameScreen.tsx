@@ -1,4 +1,4 @@
-import React, { FC, SetStateAction, useState } from 'react'
+import React, { useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -40,6 +40,11 @@ const StartGameScreen: React.FC<PropTypes> = ({ onSetNumberHandler }) => {
     onSetNumberHandler(null)
   }
 
+  const onStartGameHandler = () => {
+    onSetNumberHandler(parseInt(inputValue))
+    setInputValue('')
+  }
+
   const submitForm = () => {
     const choosedNumber = parseInt(inputValue)
     if (isNaN(choosedNumber) || choosedNumber < 1 || choosedNumber > 99) {
@@ -53,16 +58,19 @@ const StartGameScreen: React.FC<PropTypes> = ({ onSetNumberHandler }) => {
     }
 
     Keyboard.dismiss()
-    setIsConfirmed(true)
     setSelectedNumber(parseInt(inputValue))
-    onSetNumberHandler(parseInt(inputValue))
-    setInputValue('')
+    setIsConfirmed(true)
   }
 
   let resultOutput
 
   if (isConfirmed) {
-    resultOutput = <OutputResult number={selectedNumber!} />
+    resultOutput = (
+      <OutputResult
+        number={selectedNumber!}
+        onStartGameHandler={onStartGameHandler}
+      />
+    )
   }
 
   return (
