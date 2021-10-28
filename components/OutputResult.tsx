@@ -18,7 +18,13 @@ const OutputResult = ({ number, onStartGameHandler }: PropTypes) => {
       <View style={styles.numberContainer}>
         <Text style={styles.numberText}>{number}</Text>
       </View>
-      <Button title='Start Game' onPress={onStartGameHandler} />
+      <Button
+        title='Start Game'
+        onPress={() => {
+          // console.log('output clicker')
+          onStartGameHandler()
+        }}
+      />
     </Card>
   )
 }

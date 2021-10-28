@@ -41,6 +41,7 @@ const StartGameScreen: React.FC<PropTypes> = ({ onSetNumberHandler }) => {
   }
 
   const onStartGameHandler = () => {
+    console.log(inputValue, 'input value')
     onSetNumberHandler(parseInt(inputValue))
     setInputValue('')
   }
@@ -60,6 +61,7 @@ const StartGameScreen: React.FC<PropTypes> = ({ onSetNumberHandler }) => {
     Keyboard.dismiss()
     setSelectedNumber(parseInt(inputValue))
     setIsConfirmed(true)
+    // onStartGameHandler()
   }
 
   let resultOutput

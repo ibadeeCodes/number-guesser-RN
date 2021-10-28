@@ -101,12 +101,10 @@ const GameScreen = (props: PropTypes) => {
       Alert.alert('Congrats!', 'Computer guessed.', [
         {
           text: 'OK',
-          onPress: () => {
-            props.onSetNumberHandler(null)
-          },
+          onPress: () => {},
         },
       ])
-      props.onSetNumberHandler(null)
+
       setGuessNumber(null)
       props.onEndGameHandler(rounds)
 

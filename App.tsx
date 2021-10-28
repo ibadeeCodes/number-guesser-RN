@@ -12,7 +12,7 @@ import GameOverScreen from './screens/GameOverScreen'
 
 const App = () => {
   const [number, setNumber] = useState<number | null>()
-  const [guessRounds, setGuessRounds] = useState<number | null>()
+  const [guessRounds, setGuessRounds] = useState<number | null>(0)
 
   const onSetNumberHandler = (value: number | null): void => {
     setNumber(value)
