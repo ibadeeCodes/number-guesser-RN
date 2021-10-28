@@ -124,6 +124,8 @@ const styles = StyleSheet.create({
   },
   screenTitle: {
     fontSize: 24,
+    fontFamily: 'open-sans',
+    fontWeight: 'bold',
   },
   inputContainer: {
     maxWidth: '80%',
