@@ -49,6 +49,14 @@ const App = () => {
 
   let content = <StartGameScreen onSetNumberHandler={onSetNumberHandler} />
 
+  content = (
+    <GameOverScreen
+      guessRounds={1}
+      userNumber={1}
+      configureNewGameHandler={configureNewGameHandler}
+    />
+  )
+
   if (number && guessRounds <= 0) {
     content = (
       <GameScreen

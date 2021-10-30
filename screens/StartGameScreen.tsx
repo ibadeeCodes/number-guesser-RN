@@ -13,6 +13,7 @@ import {
 import Card from '../components/Card'
 import Input from '../components/Input'
 import OutputResult from '../components/OutputResult'
+import BodyTitle from '../components/BodyTitle'
 
 // Theme
 import { colors } from '../styles/theme'
@@ -41,7 +42,6 @@ const StartGameScreen: React.FC<PropTypes> = ({ onSetNumberHandler }) => {
   }
 
   const onStartGameHandler = () => {
-    console.log(inputValue, 'input value')
     onSetNumberHandler(parseInt(inputValue))
     setInputValue('')
   }
@@ -80,7 +80,7 @@ const StartGameScreen: React.FC<PropTypes> = ({ onSetNumberHandler }) => {
       <View style={styles.screen}>
         <Text style={styles.screenTitle}>Let's Play The Game!</Text>
         <Card style={styles.inputContainer}>
-          <Text>Enter a Number!</Text>
+          <BodyTitle style={{ color: 'teal' }}>Enter a Number!</BodyTitle>
           <Input
             style={styles.input}
             blurOnSubmit

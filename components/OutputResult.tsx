@@ -21,7 +21,6 @@ const OutputResult = ({ number, onStartGameHandler }: PropTypes) => {
       <Button
         title='Start Game'
         onPress={() => {
-          // console.log('output clicker')
           onStartGameHandler()
         }}
       />

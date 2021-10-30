@@ -35,9 +35,6 @@ const GameScreen = (props: PropTypes) => {
   const currentHigh = useRef(100)
 
   const onNextGuessHandler = (direction) => {
-    console.log('inside next guess handler')
-    console.log(`user guess is => ${props.userNumber}`)
-
     // Check if user lies!
     if (
       (direction == 'lower' && guessNumber < props.userNumber) ||
@@ -59,17 +56,10 @@ const GameScreen = (props: PropTypes) => {
       return
     } else {
       if (direction === 'lower') {
-        console.log('on lower => guessnumber', guessNumber)
-
         currentHigh.current = guessNumber
       } else {
         currentLow.current = guessNumber
-
-        console.log('on higher => guessnumber', guessNumber)
       }
-
-      console.log(currentLow.current, 'current low passed to nextNumber')
-      console.log(currentHigh.current, 'current high passed to nextNumber')
 
       const nextNumber = generateNumberBetween(
         currentLow.current,
