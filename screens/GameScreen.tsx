@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { View, Text, Button, StyleSheet, Alert } from 'react-native'
+import { Ionicons, AntDesign } from '@expo/vector-icons'
 import Card from '../components/Card'
 import NumberContainer from '../components/NumberContainer'
 import { colors } from '../styles/theme'
+import MyButton from '../components/MyButton'
 
 interface PropTypes {
   userNumber: number
@@ -107,16 +109,12 @@ const GameScreen = (props: PropTypes) => {
       <Text>Opponents guess</Text>
       <NumberContainer>{guessNumber}</NumberContainer>
       <Card style={styles.card}>
-        <Button
-          title='SMALLER'
-          onPress={onNextGuessHandler.bind(this, 'lower')}
-          color={colors.secondary}
-        />
-        <Button
-          title='GREATER'
-          onPress={onNextGuessHandler.bind(this, 'upper')}
-          color={colors.primary}
-        />
+        <MyButton onPress={onNextGuessHandler.bind(this, 'lower')}>
+          <AntDesign name='minuscircleo' size={25} color='white' />
+        </MyButton>
+        <MyButton onPress={onNextGuessHandler.bind(this, 'upper')}>
+          <AntDesign name='pluscircleo' size={25} color='white' />
+        </MyButton>
       </Card>
       <View style={{ marginTop: 15 }}>
         <Button
