@@ -1,5 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, Button, StyleSheet, Alert } from 'react-native'
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  Alert,
+  ScrollView,
+  FlatList,
+} from 'react-native'
 import { Ionicons, AntDesign } from '@expo/vector-icons'
 import Card from '../components/Card'
 import NumberContainer from '../components/NumberContainer'
@@ -26,12 +34,19 @@ const generateNumberBetween = (min: number, max: number, exclude: number) => {
   }
 }
 
-const GameScreen = (props: PropTypes) => {
-  const [guessNumber, setGuessNumber] = useState(
-    generateNumberBetween(1, 100, props.userNumber)
-  )
+const renderListItem = (listLength: any, itemData: any) => (
+  <View style={styles.listItem}>
+    <Text># {listLength - itemData.index}</Text>
+    <Text>{itemData.item}</Text>
+  </View>
+)
 
-  const [rounds, setRounds] = useState(0)
+const GameScreen = (props: PropTypes) => {
+  let initialGuess = generateNumberBetween(1, 100, props.userNumber)
+
+  const [guessNumber, setGuessNumber] = useState(initialGuess)
+
+  const [rounds, setRounds] = useState([String(initialGuess)])
 
   const currentLow = useRef(1)
   const currentHigh = useRef(100)
@@ -60,7 +75,7 @@ const GameScreen = (props: PropTypes) => {
       if (direction === 'lower') {
         currentHigh.current = guessNumber
       } else {
-        currentLow.current = guessNumber
+        currentLow.current = guessNumber + 1
       }
 
       const nextNumber = generateNumberBetween(
@@ -70,7 +85,7 @@ const GameScreen = (props: PropTypes) => {
       )
 
       setGuessNumber(nextNumber)
-      setRounds((prevRound) => prevRound + 1)
+      setRounds((prevRound) => [String(nextNumber), ...prevRound])
     }
   }
 
@@ -98,7 +113,7 @@ const GameScreen = (props: PropTypes) => {
       ])
 
       setGuessNumber(null)
-      props.onEndGameHandler(rounds)
+      props.onEndGameHandler(rounds.length)
 
       return
     }
@@ -106,7 +121,7 @@ const GameScreen = (props: PropTypes) => {
 
   return (
     <View style={styles.screen}>
-      <Text>Opponents guess</Text>
+      <Text>Opponents Guess</Text>
       <NumberContainer>{guessNumber}</NumberContainer>
       <Card style={styles.card}>
         <MyButton onPress={onNextGuessHandler.bind(this, 'lower')}>
@@ -116,11 +131,22 @@ const GameScreen = (props: PropTypes) => {
           <AntDesign name='pluscircleo' size={25} color='white' />
         </MyButton>
       </Card>
-      <View style={{ marginTop: 15 }}>
+      {/* <View style={{ marginTop: 15 }}>
         <Button
           title='Restart Game'
           onPress={onRestart}
           color={colors.warning}
+        />
+      </View> */}
+      <View style={styles.listContainer}>
+        <Text style={{ marginVertical: 10 }}>Past Guesses</Text>
+        {/* <ScrollView>
+          {rounds.map((round, idx) => renderListItem(round, idx))}
+        </ScrollView> */}
+        <FlatList
+          keyExtractor={(item) => item}
+          data={rounds}
+          renderItem={renderListItem.bind(this, rounds.length)}
         />
       </View>
     </View>
@@ -139,6 +165,19 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     alignItems: 'center',
+  },
+  listContainer: {
+    width: '80%',
+    flex: 1,
+  },
+  listItem: {
+    borderColor: '#ccc',
+    borderWidth: 2,
+    marginVertical: 6,
+    padding: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
   },
 })
 
