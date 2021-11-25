@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   StyleSheet,
   View,
@@ -7,6 +7,8 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Alert,
+  ScrollView,
+  Dimensions,
 } from 'react-native'
 
 // Custom Components
@@ -28,6 +30,11 @@ const StartGameScreen: React.FC<PropTypes> = ({ onSetNumberHandler }) => {
   const [selectedNumber, setSelectedNumber] =
     useState<React.SetStateAction<number>>()
   const [isConfirmed, setIsConfirmed] = useState(false)
+
+  // Orientation based state.
+  const [buttonWidth, setButtonWidth] = useState(
+    Dimensions.get('window').width / 4
+  )
 
   // Events Handling
   const onInputChange = (value: string) => {
@@ -75,42 +82,67 @@ const StartGameScreen: React.FC<PropTypes> = ({ onSetNumberHandler }) => {
     )
   }
 
+  const onOrientationChangeHandler = () => {
+    setButtonWidth(Dimensions.get('window').width / 4)
+  }
+
+  console.log(Dimensions.get('window').width, 'width')
+
+  useEffect(() => {
+    Dimensions.addEventListener('change', onOrientationChangeHandler)
+
+    return () => {
+      Dimensions.removeEventListener('change', onOrientationChangeHandler)
+    }
+  }, [])
+
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.screen}>
-        <Text style={styles.screenTitle}>Let's Play The Game!</Text>
-        <Card style={styles.inputContainer}>
-          <BodyTitle style={{ color: 'teal' }}>Enter a Number!</BodyTitle>
-          <Input
-            style={styles.input}
-            blurOnSubmit
-            autoCapitialize='none'
-            autoCorrect={false}
-            keyboardType='numeric'
-            maxLength={2}
-            onChangeText={onInputChange}
-            value={inputValue}
-          />
-          <View style={styles.formButtonContainer}>
-            <View style={styles.formButton}>
-              <Button
-                title='Reset'
-                onPress={resetForm}
-                color={colors.secondary}
-              />
+    <ScrollView>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.screen}>
+          <Text style={styles.screenTitle}>Let's Play The Game!</Text>
+          <Card style={styles.inputContainer}>
+            <BodyTitle style={{ color: 'teal' }}>Enter a Number!</BodyTitle>
+            <Input
+              style={styles.input}
+              blurOnSubmit
+              autoCapitialize='none'
+              autoCorrect={false}
+              keyboardType='numeric'
+              maxLength={2}
+              onChangeText={onInputChange}
+              value={inputValue}
+            />
+            <View style={styles.formButtonContainer}>
+              <View
+                style={{
+                  width: buttonWidth,
+                }}
+              >
+                <Button
+                  title='Reset'
+                  onPress={resetForm}
+                  color={colors.secondary}
+                />
+              </View>
+              <View
+                // style={styles.formButton}
+                style={{
+                  width: buttonWidth,
+                }}
+              >
+                <Button
+                  title='Confirm'
+                  onPress={submitForm}
+                  color={colors.primary}
+                />
+              </View>
             </View>
-            <View style={styles.formButton}>
-              <Button
-                title='Confirm'
-                onPress={submitForm}
-                color={colors.primary}
-              />
-            </View>
-          </View>
-        </Card>
-        {resultOutput}
-      </View>
-    </TouchableWithoutFeedback>
+          </Card>
+          {resultOutput}
+        </View>
+      </TouchableWithoutFeedback>
+    </ScrollView>
   )
 }
 
@@ -129,7 +161,8 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     maxWidth: '80%',
-    width: 350,
+    // width: 350,
+    width: Dimensions.get('window').width * 0.8,
     alignItems: 'center',
   },
   input: {
@@ -142,9 +175,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  formButton: {
-    width: 100,
-  },
+  // formButton: {
+  //   width: 100,
+  // },
 })
 
 export default StartGameScreen

@@ -7,6 +7,8 @@ import {
   Alert,
   ScrollView,
   FlatList,
+  Dimensions,
+  SafeAreaView,
 } from 'react-native'
 import { Ionicons, AntDesign } from '@expo/vector-icons'
 import Card from '../components/Card'
@@ -47,6 +49,14 @@ const GameScreen = (props: PropTypes) => {
   const [guessNumber, setGuessNumber] = useState(initialGuess)
 
   const [rounds, setRounds] = useState([String(initialGuess)])
+
+  const [availableDeviceWidth, setAvailableDeviceWidth] = useState(
+    Dimensions.get('window').width
+  )
+
+  const [availableDeviceHeight, setAvailableDeviceHeight] = useState(
+    Dimensions.get('window').height
+  )
 
   const currentLow = useRef(1)
   const currentHigh = useRef(100)
@@ -119,7 +129,56 @@ const GameScreen = (props: PropTypes) => {
     }
   }, [props.userNumber, guessNumber])
 
+  useEffect(() => {
+    const onOrientationChangeHandler = () => {
+      setAvailableDeviceWidth(Dimensions.get('window').width)
+      setAvailableDeviceHeight(Dimensions.get('window').height)
+    }
+
+    Dimensions.addEventListener('change', onOrientationChangeHandler)
+
+    return () => {
+      Dimensions.removeEventListener('change', onOrientationChangeHandler)
+    }
+  }, [])
+
+  console.log(availableDeviceHeight, 'height')
+
+  if (availableDeviceHeight < 500) {
+    return (
+      // <ScrollView>
+      <View style={styles.screen}>
+        <Text>Opponents Guess</Text>
+
+        <View style={styles.controls}>
+          <MyButton onPress={onNextGuessHandler.bind(this, 'lower')}>
+            <AntDesign name='minuscircleo' size={25} color='white' />
+          </MyButton>
+
+          <NumberContainer>{guessNumber}</NumberContainer>
+          <MyButton onPress={onNextGuessHandler.bind(this, 'upper')}>
+            <AntDesign name='pluscircleo' size={25} color='white' />
+          </MyButton>
+        </View>
+
+        <View style={styles.listContainer}>
+          <Text style={{ marginVertical: 10 }}>Past Guesses</Text>
+
+          <SafeAreaView>
+            <FlatList
+              keyExtractor={(item) => item}
+              data={rounds}
+              renderItem={renderListItem.bind(this, rounds.length)}
+            />
+          </SafeAreaView>
+        </View>
+      </View>
+      // </ScrollView>
+    )
+  }
+
   return (
+    // <ScrollView>
     <View style={styles.screen}>
       <Text>Opponents Guess</Text>
       <NumberContainer>{guessNumber}</NumberContainer>
@@ -143,13 +202,16 @@ const GameScreen = (props: PropTypes) => {
         {/* <ScrollView>
           {rounds.map((round, idx) => renderListItem(round, idx))}
         </ScrollView> */}
+        {/* <SafeAreaView> */}
         <FlatList
           keyExtractor={(item) => item}
           data={rounds}
           renderItem={renderListItem.bind(this, rounds.length)}
         />
+        {/* </SafeAreaView> */}
       </View>
     </View>
+    // </ScrollView>
   )
 }
 
@@ -160,6 +222,13 @@ const styles = StyleSheet.create({
     maxWidth: '80%',
     marginTop: 10,
     justifyContent: 'space-around',
+  },
+  controls: {
+    width: '80%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   screen: {
     flex: 1,
